@@ -22,7 +22,12 @@ class Calc:
     def new(cls: Type[Calc]) -> Calc:
         return cls()
 
-    def __process_value(self, value: int) -> Union[Calc, int]:
+    @property
+    def result(self) -> int:
+        self._operation = None
+        return self._accumulator
+
+    def __process_value(self, value: int) -> None:
         """
         Check for a pending operation.
         If one exists perform it against the current accumulator and the value property.
@@ -33,6 +38,8 @@ class Calc:
             return self
 
         if self._operation is Operation.DIVIDED_BY:
+            # this package is expected to deal with only integers but division will return a float
+            # we are going to use integer division and drop and decimals with the `floor` function
             self._accumulator = floor(self._accumulator / value)
         elif self._operation is Operation.MINUS:
             self._accumulator = self._accumulator - value
@@ -40,7 +47,9 @@ class Calc:
             self._accumulator = self._accumulator + value
         elif self._operation is Operation.TIMES:
             self._accumulator = self._accumulator * value
-        return self._accumulator
+
+        # a calculation has completed and the operation is reset
+        self._operation = None
 
     # operations calculator can perform
     @property
@@ -65,41 +74,51 @@ class Calc:
 
     # values
     @property
-    def zero(self) -> Union[Calc, int]:
-        return self.__process_value(0)
+    def zero(self) -> Calc:
+        self.__process_value(0)
+        return self
 
     @property
-    def one(self) -> Union[Calc, int]:
-        return self.__process_value(1)
+    def one(self) -> Calc:
+        self.__process_value(1)
+        return self
 
     @property
-    def two(self) -> Union[Calc, int]:
-        return self.__process_value(2)
+    def two(self) -> Calc:
+        self.__process_value(2)
+        return self
 
     @property
-    def three(self) -> Union[Calc, int]:
-        return self.__process_value(3)
+    def three(self) -> Calc:
+        self.__process_value(3)
+        return self
 
     @property
-    def four(self) -> Union[Calc, int]:
-        return self.__process_value(4)
+    def four(self) -> Calc:
+        self.__process_value(4)
+        return self
 
     @property
-    def five(self) -> Union[Calc, int]:
-        return self.__process_value(5)
+    def five(self) -> Calc:
+        self.__process_value(5)
+        return self
 
     @property
-    def six(self) -> Union[Calc, int]:
-        return self.__process_value(6)
+    def six(self) -> Calc:
+        self.__process_value(6)
+        return self
 
     @property
-    def seven(self) -> Union[Calc, int]:
-        return self.__process_value(7)
+    def seven(self) -> Calc:
+        self.__process_value(7)
+        return self
 
     @property
-    def eight(self) -> Union[Calc, int]:
-        return self.__process_value(8)
+    def eight(self) -> Calc:
+        self.__process_value(8)
+        return self
 
     @property
-    def nine(self) -> Union[Calc, int]:
-        return self.__process_value(9)
+    def nine(self) -> Calc:
+        self.__process_value(9)
+        return self

@@ -19,11 +19,9 @@ class Test_ClassPropertyFactory:
 
 class Test_SetNumber:
     def test_new_defaultAccumulatorValue_shouldBeZero(self) -> None:
-        instance: Calc = Calc.new
+        assert Calc.new._accumulator == 0
 
-        assert instance._accumulator == 0
-
-    def test_number_setNumberWithoutOperation_shouldSetValueInAccumulator(self) -> None:
+    def test_number_setNumberWithoutOperation_shouldOverwriteAccumulator(self) -> None:
         instance: Calc = Calc.new
 
         instance.one
@@ -47,21 +45,15 @@ class Test_SetNumber:
         instance.zero
         assert instance._accumulator == 0
 
-    def test_number_setNumberWithoutOperation_shouldReturnSelf(self) -> None:
-        instance: Calc = Calc.new
-
-        getter = instance.one
-
-        assert isinstance(getter, Calc)
+    def test_number_setNumber_shouldReturnSelf(self) -> None:
+        assert isinstance(Calc.new.one, Calc)
 
 
 class Test_SetOperation:
     def test_operation_defaultOperation_shouldBeNone(self) -> None:
-        instance: Calc = Calc.new
+        assert Calc.new._operation is None
 
-        assert instance._operation is None
-
-    def test_operation_setOperation_shouldSaveOperation(self) -> None:
+    def test_operation_setMultipleOperations_shouldOverwriteOperation(self) -> None:
         instance: Calc = Calc.new
 
         instance.divided_by
@@ -74,18 +66,12 @@ class Test_SetOperation:
         assert instance._operation is Operation.TIMES
 
     def test_operation_setOperation_shouldReturnSelf(self) -> None:
-        instance: Calc = Calc.new
-
-        getter = instance.divided_by
-
-        assert isinstance(getter, Calc)
+        assert isinstance(Calc.new.divided_by, Calc)
 
 
 class Test_ExecuteOperation:
     def test_divideBy_twoNumbersWithIntegerResult_shouldReturnIntResult(self) -> None:
-        instance: Calc = Calc.new
-
-        result = instance.two.divided_by.two
+        result = Calc.new.two.divided_by.two.result
 
         assert result == 1
         assert isinstance(result, int)
@@ -93,23 +79,17 @@ class Test_ExecuteOperation:
     def test_divideBy_twoNumbersWithRationalNumberResult_shouldReturnIntResult(
         self,
     ) -> None:
-        instance: Calc = Calc.new
-
-        result = instance.five.divided_by.three
+        result = Calc.new.five.divided_by.three.result
 
         assert result == 1
         assert isinstance(result, int)
 
     def test_divideBy_divideByZero_shouldRaiseException(self) -> None:
-        instance: Calc = Calc.new
-
         with pytest.raises(ZeroDivisionError):
-            instance.five.divided_by.zero
+            Calc.new.five.divided_by.zero.result
 
     def test_minus_subtractTwoNumbers_shouldReturnIntResult(self) -> None:
-        instance: Calc = Calc.new
-
-        result = instance.five.minus.one
+        result = Calc.new.five.minus.one.result
 
         assert result == 4
         assert isinstance(result, int)
@@ -117,17 +97,13 @@ class Test_ExecuteOperation:
     def test_minus_subtractTwoNumbersWithNegativeResult_shouldReturnIntResult(
         self,
     ) -> None:
-        instance: Calc = Calc.new
-
-        result = instance.one.minus.five
+        result = Calc.new.one.minus.five.result
 
         assert result == -4
         assert isinstance(result, int)
 
     def test_plus_addTwoNumbers_shouldReturnIntResult(self) -> None:
-        instance: Calc = Calc.new
-
-        result = instance.one.plus.one
+        result = Calc.new.one.plus.one.result
 
         assert result == 2
         assert isinstance(result, int)
@@ -135,18 +111,14 @@ class Test_ExecuteOperation:
     def test_times_multiplyTwoNumbers_shouldReturnIntResult(self) -> None:
         instance: Calc = Calc.new
 
-        result = instance.five.times.three
+        result = instance.five.times.three.result
 
         assert result == 15
         assert isinstance(result, int)
 
 
-def asdfasdf() -> int:
-    return 9
-
-
 def test_SampleTestCasesInSpec() -> None:
-    assert Calc.new.one.plus.two == 3
-    assert Calc.new.five.minus.six == -1
-    assert Calc.new.seven.times.two == 14
-    assert Calc.new.nine.divided_by.three == 3
+    assert Calc.new.one.plus.two.result == 3
+    assert Calc.new.five.minus.six.result == -1
+    assert Calc.new.seven.times.two.result == 14
+    assert Calc.new.nine.divided_by.three.result == 3

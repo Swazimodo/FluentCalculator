@@ -33,6 +33,8 @@ class Calc:
             return self
 
         if self._operation is Operation.DIVIDED_BY:
+            # this package is expected to deal with only integers but division will return a float
+            # we are going to use integer division and drop and decimals with the `floor` function
             self._accumulator = floor(self._accumulator / value)
         elif self._operation is Operation.MINUS:
             self._accumulator = self._accumulator - value

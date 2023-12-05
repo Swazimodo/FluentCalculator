@@ -23,7 +23,7 @@ class Test_SetNumber:
 
         assert instance._accumulator == 0
 
-    def test_number_setNumberWithoutOperation_shouldSetValueInAccumulator(self) -> None:
+    def test_number_setNumberWithoutOperation_shouldOverwriteAccumulator(self) -> None:
         instance: Calc = Calc.new
 
         instance.one
@@ -61,7 +61,7 @@ class Test_SetOperation:
 
         assert instance._operation is None
 
-    def test_operation_setOperation_shouldSaveOperation(self) -> None:
+    def test_operation_setMultipleOperations_shouldOverwriteOperation(self) -> None:
         instance: Calc = Calc.new
 
         instance.divided_by
