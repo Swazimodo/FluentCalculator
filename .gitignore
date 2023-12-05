@@ -1,0 +1,7 @@
+# python
+.venv
+__pycache__
+
+# tooling cache dirs
+.mypy_cache
+.pytest_cache
