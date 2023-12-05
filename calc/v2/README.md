@@ -1,17 +1,22 @@
-This first approach is probably the simplest solution that accomplishes the spec but comes at the cost of type safety.
-This is due to the fact that the number properties have two possible result types.
-The first option is a `Calc` instance which will allow chaining, and the second is a int result.
-This causes mypy to give a bunch of errors which would need to be ignored opening yourself up for real errors that should have been caught.
+Here I iterated on my initial design to improve type safety.
+First I fixed the ClassProperty decorator using the new generic syntax in python 3.12.
+Before you would have had to use `TypeVar` and `Generic` to do this but now it's much simpler.
+The result of this is that it is able to see the types past `new` in the chain.
 
+The second change modifies the spec slightly and moves in the direction of the builder pattern with the addition of `result`.
+Calling the value properties will always return `self` for easy chaining which provides a couple advantages.
+First off you have type safety in the chain and no longer see errors from the union return type.
+This would keep users from needing to add type ignores in their code helping move more errors to be caught at build time.
+The second advantage is that the calculation is not completed when the second number is entered allowing for more complex equations.
 ```
-running mypy
-tests\v1\test_calc.py:88: error: Item "int" of "Calc | int" has no attribute "divided_by"  [union-attr]
-tests\v1\test_calc.py:96: error: Item "int" of "Calc | int" has no attribute "divided_by"  [union-attr]
-tests\v1\test_calc.py:105: error: Item "int" of "Calc | int" has no attribute "divided_by"  [union-attr]
-tests\v1\test_calc.py:110: error: Item "int" of "Calc | int" has no attribute "minus"  [union-attr]
-tests\v1\test_calc.py:118: error: Item "int" of "Calc | int" has no attribute "minus"  [union-attr]
-tests\v1\test_calc.py:126: error: Item "int" of "Calc | int" has no attribute "plus"  [union-attr]
-tests\v1\test_calc.py:134: error: Item "int" of "Calc | int" has no attribute "times"  [union-attr]
+Calc.new.three.plus.two.minus.one.result (result: 4)
 ```
 
-The other issue I encountered was that when you use this chain vscode get's tripped up on the types and stops giving you proper intellisense. It looks like it knows that `new` is defined as `(property) new: (self: Self@Calc) -> Calc` but it treats it as returning `Any`. This causes it to not validate properly in the IDE or by calling mypy directly. You can type out `Calc.new.nine.asdf.three` and it will only error out at runtime.
+While this does unlock new functionality the design would then need to clarify how order of operations will be handled. Currently it will execute left to right as you would expect in a simple calculator.
+Scientific calculators on the other hand, would evaluate the entire equation at once but that would bring additional complexity.
+```
+# the equation is executed left to right causing the addition to happen before multiplication
+# (3 + 2) * 2 == 10  # right to left
+# 3 + (2 * 2) == 7   # order of operations
+Calc.new.three.plus.two.times.two.result (result: 10)
+```

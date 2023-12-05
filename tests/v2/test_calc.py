@@ -122,3 +122,16 @@ def test_SampleTestCasesInSpec() -> None:
     assert Calc.new.five.minus.six.result == -1
     assert Calc.new.seven.times.two.result == 14
     assert Calc.new.nine.divided_by.three.result == 3
+
+
+def test_multipleOperations_inconsequentialOrdering_returnsResult() -> None:
+    assert Calc.new.three.plus.two.minus.one.result == 4
+
+
+def test_multipleOperations_consequentialOrdering_returnsResultFromRightToLeftExecution() -> (
+    None
+):
+    # the equation is executed left to right causing the addition to happen before multiplication
+    # (3 + 2) * 2 == 10  # right to left
+    # 3 + (2 * 2) == 7   # order of operations
+    assert Calc.new.three.plus.two.times.two.result == 10
