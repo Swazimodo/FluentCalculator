@@ -1,7 +1,7 @@
 import pytest
 
-from calc.v1 import Calc
-from calc.v1.calc import Operation
+from calc.v2 import Calc
+from calc.v2.calc import Operation
 
 
 class Test_ClassPropertyFactory:
@@ -85,7 +85,7 @@ class Test_ExecuteOperation:
     def test_divideBy_twoNumbersWithIntegerResult_shouldReturnIntResult(self) -> None:
         instance: Calc = Calc.new
 
-        result = instance.two.divided_by.two  # type: ignore
+        result = instance.two.divided_by.two
 
         assert result == 1
         assert isinstance(result, int)
@@ -95,7 +95,7 @@ class Test_ExecuteOperation:
     ) -> None:
         instance: Calc = Calc.new
 
-        result = instance.five.divided_by.three  # type: ignore
+        result = instance.five.divided_by.three
 
         assert result == 1
         assert isinstance(result, int)
@@ -104,12 +104,12 @@ class Test_ExecuteOperation:
         instance: Calc = Calc.new
 
         with pytest.raises(ZeroDivisionError):
-            instance.five.divided_by.zero  # type: ignore
+            instance.five.divided_by.zero
 
     def test_minus_subtractTwoNumbers_shouldReturnIntResult(self) -> None:
         instance: Calc = Calc.new
 
-        result = instance.five.minus.one  # type: ignore
+        result = instance.five.minus.one
 
         assert result == 4
         assert isinstance(result, int)
@@ -119,7 +119,7 @@ class Test_ExecuteOperation:
     ) -> None:
         instance: Calc = Calc.new
 
-        result = instance.one.minus.five  # type: ignore
+        result = instance.one.minus.five
 
         assert result == -4
         assert isinstance(result, int)
@@ -127,7 +127,7 @@ class Test_ExecuteOperation:
     def test_plus_addTwoNumbers_shouldReturnIntResult(self) -> None:
         instance: Calc = Calc.new
 
-        result = instance.one.plus.one  # type: ignore
+        result = instance.one.plus.one
 
         assert result == 2
         assert isinstance(result, int)
@@ -135,10 +135,14 @@ class Test_ExecuteOperation:
     def test_times_multiplyTwoNumbers_shouldReturnIntResult(self) -> None:
         instance: Calc = Calc.new
 
-        result = instance.five.times.three  # type: ignore
+        result = instance.five.times.three
 
         assert result == 15
         assert isinstance(result, int)
+
+
+def asdfasdf() -> int:
+    return 9
 
 
 def test_SampleTestCasesInSpec() -> None:
@@ -146,6 +150,3 @@ def test_SampleTestCasesInSpec() -> None:
     assert Calc.new.five.minus.six == -1
     assert Calc.new.seven.times.two == 14
     assert Calc.new.nine.divided_by.three == 3
-
-    # this should fail from a type check but it doesn't
-    # assert Calc.new.nine.asdf.three == 0
