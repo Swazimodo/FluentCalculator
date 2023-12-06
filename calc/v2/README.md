@@ -20,3 +20,26 @@ Scientific calculators on the other hand, would evaluate the entire equation at 
 # 3 + (2 * 2) == 7   # order of operations
 Calc.new.three.plus.two.times.two.result (result: 10)
 ```
+
+I tried seeing if you could take this farther to unlock any integer instead of 0-9
+`Calc.new.3.plus.2.result (result: 5)`
+but that experiment failed.
+```
+class DynamicAttributes:
+    def __init__(self) -> None:
+        # Cannot have attribute names starting with a number
+        # self.1 = 1
+
+        # I tried forcing a number attribute into the class's internal dict
+        # but this is not accessible unless you also access it this way
+        # because it runs into the same limitation that attribute names can't
+        # start with a number
+        self.__dict__["1"] = 1
+
+    def __getattr__(self, attr):
+        # If it was possible to access number named attributes
+        # you could do something like this to dynamically parse them into numbers.
+        # However, even if this did work it would not allow you to have type safety
+        # as this is a runtime hack
+        return int(attr)
+```
