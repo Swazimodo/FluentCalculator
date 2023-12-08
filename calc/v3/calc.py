@@ -11,14 +11,13 @@ class Operation(Enum):
     DIVIDED_BY = 4
 
 
+# pylint: disable-next=too-few-public-methods
 class CalculatorFactory:
-    def __init__(self) -> None:
-        self.fget = lambda: CalculatorStart()
-
     def __get__(self, instance: None, cls: object) -> CalculatorStart:
-        return self.fget()
+        return CalculatorStart()
 
 
+# pylint: disable-next=too-few-public-methods
 class Calc:
     new = CalculatorFactory()
 
@@ -137,11 +136,11 @@ class CalculatorFinal:
             # this package is expected to deal with only integers but division will return a float
             # we are going to use integer division and drop and decimals with the `floor` function
             return floor(self._accumulator / value)
-        elif self._operation is Operation.MINUS:
+        if self._operation is Operation.MINUS:
             return self._accumulator - value
-        elif self._operation is Operation.PLUS:
+        if self._operation is Operation.PLUS:
             return self._accumulator + value
-        elif self._operation is Operation.TIMES:
+        if self._operation is Operation.TIMES:
             return self._accumulator * value
         raise AttributeError("An invalid operation type has been specified")
 
