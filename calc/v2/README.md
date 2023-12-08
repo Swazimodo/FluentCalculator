@@ -3,7 +3,7 @@ First I fixed the ClassProperty decorator using the new generic syntax in python
 Before you would have had to use `TypeVar` and `Generic` to do this but now it's much simpler.
 The result of this is that it is able to see the types past `new` in the chain.
 
-The second change modifies the spec slightly and moves in the direction of the builder pattern with the addition of `result`.
+The second change I also modified the spec slightly and moves in the direction of the builder pattern with the addition of `result`.
 Calling the value properties will always return `self` for easy chaining which provides a couple advantages.
 First off you have type safety in the chain and no longer see errors from the union return type.
 This would keep users from needing to add type ignores in their code helping move more errors to be caught at build time.
