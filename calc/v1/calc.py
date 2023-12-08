@@ -1,9 +1,9 @@
 from __future__ import annotations
-from typing import Optional, Union
+from typing import Optional, Union, Type
 from enum import Enum
 from math import floor
 
-from calc.v1.classproperty import classproperty
+from calc.v1.classproperty import ClassProperty
 
 
 class Operation(Enum):
@@ -18,8 +18,9 @@ class Calc:
         self._accumulator: int = 0
         self._operation: Optional[Operation] = None
 
-    @classproperty
-    def new(self) -> Calc:
+    @ClassProperty
+    # @ClassProperty makes this a static property so there is not a `self`
+    def new() -> Calc:  # type: ignore [misc]
         return Calc()
 
     def __process_value(self, value: int) -> Union[Calc, int]:

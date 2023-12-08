@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Optional, Union, Type
+from typing import Optional
 from enum import Enum
 from math import floor
 
@@ -19,8 +19,9 @@ class Calc:
         self._operation: Optional[Operation] = None
 
     @ClassProperty
-    def new(cls: Type[Calc]) -> Calc:
-        return cls()
+    # @ClassProperty makes this a static property so there is not a `self`
+    def new() -> Calc:  # type: ignore [misc]
+        return Calc()
 
     @property
     def result(self) -> int:
@@ -35,7 +36,7 @@ class Calc:
         """
         if self._operation is None:
             self._accumulator = value
-            return self
+            return
 
         if self._operation is Operation.DIVIDED_BY:
             # this package is expected to deal with only integers but division will return a float
